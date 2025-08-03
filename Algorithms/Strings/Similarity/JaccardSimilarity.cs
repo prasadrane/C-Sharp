@@ -68,12 +68,9 @@ public class JaccardSimilarity
         var leftSet = new HashSet<char>(left);
         var rightSet = new HashSet<char>(right);
 
-        // Get the union of the two strings.
+        // Get the union of the two strings using modern UnionWith method.
         var unionSet = new HashSet<char>(leftSet);
-        foreach (var c in rightSet)
-        {
-            unionSet.Add(c);
-        }
+        unionSet.UnionWith(rightSet);
 
         // Calculate the intersection size of the two strings.
         var intersectionSize = leftSet.Count + rightSet.Count - unionSet.Count;
@@ -87,11 +84,11 @@ public class JaccardSimilarity
     /// </summary>
     /// <param name="left">The first string to validate.</param>
     /// <param name="right">The second string to validate.</param>
-    private void ValidateInput(string left, string right)
+    private static void ValidateInput(string left, string right)
     {
-        if (left == null || right == null)
+        if (left is null || right is null)
         {
-            var paramName = left == null ? nameof(left) : nameof(right);
+            var paramName = left is null ? nameof(left) : nameof(right);
             throw new ArgumentNullException(paramName, "Input cannot be null");
         }
     }
