@@ -44,10 +44,7 @@ public class Timeline<TValue> : ICollection<(DateTime Time, TValue Value)>, IEqu
     /// <param name="time">The time at which the given event occurred.</param>
     /// <param name="value">The event's content.</param>
     public Timeline(DateTime time, TValue value)
-        => timeline = new List<(DateTime, TValue)>
-        {
-            (time, value),
-        };
+        => timeline = [(time, value)];
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="Timeline{TValue}"/> class containing the provided events
@@ -55,9 +52,7 @@ public class Timeline<TValue> : ICollection<(DateTime Time, TValue Value)>, IEqu
     /// </summary>
     /// <param name="timeline">The timeline to represent.</param>
     public Timeline(params (DateTime, TValue)[] timeline)
-        => this.timeline = timeline
-            .OrderBy(pair => pair.Item1)
-            .ToList();
+        => this.timeline = [.. timeline.OrderBy(pair => pair.Item1)];
 
     /// <summary>
     /// Gets he number of unique times within this timeline.

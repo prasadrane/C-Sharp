@@ -30,8 +30,8 @@ public static class Luhn
     /// <returns>Missing digit.</returns>
     public static int GetLostNum(string number)
     {
-        var lostIndex = number.Length - 1 - number.LastIndexOf("x", StringComparison.CurrentCultureIgnoreCase);
-        var lostNum = GetSum(number.Replace("x", "0", StringComparison.CurrentCultureIgnoreCase)) * 9 % 10;
+        var lostIndex = number.Length - 1 - number.LastIndexOf("x", StringComparison.OrdinalIgnoreCase);
+        var lostNum = GetSum(number.Replace("x", "0", StringComparison.OrdinalIgnoreCase)) * 9 % 10;
 
         // Case 1: If the index of the lost digit is even.
         if (lostIndex % 2 == 0)
@@ -43,7 +43,7 @@ public static class Luhn
 
         // Case 2: if the index of the lost digit isn`t even and that number <= 4.
         // Case 3: if the index of the lost digit isn`t even and that number > 4.
-        return Validate(number.Replace("x", tempLostNum.ToString())) ? tempLostNum : (lostNum + 9) / 2;
+        return Validate(number.Replace("x", tempLostNum.ToString(), StringComparison.OrdinalIgnoreCase)) ? tempLostNum : (lostNum + 9) / 2;
     }
 
     /// <summary>
@@ -51,15 +51,13 @@ public static class Luhn
     /// </summary>
     /// <param name="number">The number for which the sum will be found.</param>
     /// <returns>Sum.</returns>
-    private static int GetSum(string number)
+    private static int GetSum(ReadOnlySpan<char> number)
     {
         var sum = 0;
         for (var i = 0; i < number.Length; i++)
         {
             var d = number[i] - '0';
-            d = (i + number.Length) % 2 == 0
-                ? 2 * d
-                : d;
+            d = (i + number.Length) % 2 == 0 ? 2 * d : d;
             if (d > 9)
             {
                 d -= 9;

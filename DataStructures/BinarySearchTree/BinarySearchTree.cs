@@ -30,14 +30,12 @@ public class BinarySearchTree<TKey>
 
     public BinarySearchTree()
     {
-        Root = null;
         Count = 0;
         comparer = Comparer<TKey>.Default;
     }
 
     public BinarySearchTree(Comparer<TKey> customComparer)
     {
-        Root = null;
         Count = 0;
         comparer = customComparer;
     }
